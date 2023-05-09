@@ -5,6 +5,12 @@ VisualStudioVersion = 25.0.1705.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoicesCRUD.UI", "InvoicesCRUD.UI\InvoicesCRUD.UI.csproj", "{88DED0DA-657D-439A-A0E2-7447303D84C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoicesCRUD.Infrastructure", "InvoicesCRUD.Infrastructure\InvoicesCRUD.Infrastructure.csproj", "{484C0251-D613-4537-95D3-77FD9A5DFEEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoicesCRUD.Core", "InvoicesCRUD.Core\InvoicesCRUD.Core.csproj", "{BF922962-AB0C-4BA2-AA5F-06396B64E0F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoicesCRUD.ServiceTests", "InvoicesCRUD.ServiceTests\InvoicesCRUD.ServiceTests.csproj", "{F3F50B87-F86E-4E0D-9315-6A37AE1F002E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{88DED0DA-657D-439A-A0E2-7447303D84C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88DED0DA-657D-439A-A0E2-7447303D84C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88DED0DA-657D-439A-A0E2-7447303D84C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{484C0251-D613-4537-95D3-77FD9A5DFEEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{484C0251-D613-4537-95D3-77FD9A5DFEEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{484C0251-D613-4537-95D3-77FD9A5DFEEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{484C0251-D613-4537-95D3-77FD9A5DFEEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF922962-AB0C-4BA2-AA5F-06396B64E0F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF922962-AB0C-4BA2-AA5F-06396B64E0F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF922962-AB0C-4BA2-AA5F-06396B64E0F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF922962-AB0C-4BA2-AA5F-06396B64E0F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3F50B87-F86E-4E0D-9315-6A37AE1F002E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3F50B87-F86E-4E0D-9315-6A37AE1F002E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3F50B87-F86E-4E0D-9315-6A37AE1F002E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3F50B87-F86E-4E0D-9315-6A37AE1F002E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

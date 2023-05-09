@@ -1,0 +1,87 @@
+﻿@model InvoiceResponse
+@{
+    Layout = "_PrintLayout";
+    ViewBag.Title = "Print - Invoice";
+    ViewBag.CurrentPage = "Print";
+}
+
+
+<div class="card shadow-none p-5">
+    <div class="card-body">
+        <div class="d-flex justify-content-between flex-row">
+            <div class="mb-4">
+
+                <h4>@ViewBag.CompanyName</h4>
+                <p>@ViewBag.CompanyAddress</p>
+
+            </div>
+            <div>
+                <h4>Invoice @Model.InvoiceNumber</h4>
+                <div>
+                    <span>Date Due:</span>
+                    <span class="fw-semibold">@Model.DueDate?.ToString("MMMM dd, yyyy")</span>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <table>
+            <tr>
+                <td class="pe-4"><label class="lead">Customer Name</label></td>
+                <td><label class="lead">@Model.CustomerName</label></td>
+            </tr>
+            <tr>
+                <td class="pe-4"><label class="lead">Customer Address</label></td>
+                <td><label class="lead">@Model.CustomerAddress</label></td>
+            </tr>
+        </table>
+        <div class="row mb-3 mt-4">
+            <div class="table-responsive text-nowrap">
+                <table class="table table-bordered" id="ProductTable">
+                    <thead>
+                        <tr>
+                            <th class="col-6">Product Name</th>
+                            <th class="col-2 text-center">Product Price</th>
+                            <th class="col-1 text-center">Quantity</th>
+                            <th class="col-2 text-center">Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach (InvoiceProductResponse invoiceProduct in @Model.InvoiceProducts)
+                        {
+                            <tr>
+                                <td>
+                                    <label class="display-label">@invoiceProduct.ProductName</label>
+                                </td>
+                                <td align="right">
+                                    <label class="display-label">@invoiceProduct.ProductPrice.ToString("C")</label>
+                                </td>
+                                <td align="center">
+                                    <label class="display-label">@invoiceProduct.Quantity</label>
+                                </td>
+                                <td align="right" id="RowTotalPrice">
+                                    @invoiceProduct.TotalPrice.ToString("C")
+                                </td>
+                            </tr>
+                        }
+                        @if (@Model.InvoiceProducts.Count == 0)
+                        {
+                            <tr class="table-secondary text-center">
+                                <td colspan="4">No data available in table.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-8 lead text-end" for="TotalPrice">Total Price</label>
+            <div class="col-sm-4 text-end">
+                <h3 for="TotalPrice">@Model.TotalPrice.ToString("C")</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>window.print();</script>
+}

@@ -1,7 +1,19 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using InvoicesCRUD.UI.StartupExtensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.ConfigureServices(builder.Configuration);
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+if (builder.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseStaticFiles();
+app.UseRouting();
+app.MapControllers();
 
 app.Run();
 

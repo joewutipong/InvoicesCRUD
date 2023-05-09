@@ -1,0 +1,46 @@
+﻿@model InvoiceProductUpdateRequest
+
+<form asp-controller="Invoices" asp-action="UpdateInvoiceProduct" method="post">
+    <input type="hidden" asp-for="@Model.InvoiceId">
+    <input type="hidden" asp-for="@Model.InvoiceProductId">
+    <tr>
+        <td>
+            <label class="display-label">@Model.ProductName</label>
+            <input class="form-control row-input" asp-for="@Model.ProductName" type="text" style="display: none;">
+            <span asp-validation-for="@Model.ProductName"
+                  class="form-text text-danger"></span>
+        </td>
+        <td align="right">
+            <label class="display-label">@Model.ProductPrice.ToString("C")</label>
+            <input class="form-control row-input input-product-cal-price" asp-for="@Model.ProductPrice" type="number" style="display: none;">
+            <span asp-validation-for="@Model.ProductPrice"
+                  class="form-text text-danger"></span>
+        </td>
+        <td align="center">
+            <label class="display-label">@Model.Quantity</label>
+            <input class="form-control row-input input-product-cal-qty" asp-for="@Model.Quantity" type="number" style="display: none;">
+            <span asp-validation-for="@Model.Quantity"
+                  class="form-text text-danger"></span>
+        </td>
+        <td align="right" id="RowTotalPrice">
+            @Model.TotalPrice.ToString("C")
+        </td>
+        <td>
+            <button type="button" class="btn btn-icon btn-outline-primary btn-edit-product" onclick="editRow(this)">
+                <span class="tf-icons bx bx-edit"></span>
+            </button>
+
+            <button type="submit" class="btn btn-icon btn-outline-success btn-submit-product" style="display: none;">
+                <span class="tf-icons bx bx-save"></span>
+            </button>
+
+            <button type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteProductModal" class="btn btn-icon btn-outline-danger btn-delete-product" onclick="confirmDeleteInvoiceProduct('@Model.InvoiceId', '@Model.InvoiceProductId', '@Model.ProductName')">
+                <span class="tf-icons bx bx-trash"></span>
+            </button>
+
+            <button type="button" class="btn btn-icon btn-outline-secondary btn-cancel-product" onclick="cancelEdit(this)" style="display: none;">
+                <span class="tf-icons bx bx-undo"></span>
+            </button>
+        </td>
+    </tr>
+</form>

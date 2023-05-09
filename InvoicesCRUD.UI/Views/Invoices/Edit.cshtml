@@ -1,10 +1,10 @@
-﻿@model InvoiceAddRequest
+﻿@model InvoiceUpdateRequest
 @{
-    ViewBag.Title = "Create - Invoice";
+    ViewBag.Title = "Edit - Invoice";
     ViewBag.CurrentPage = "Invoices";
 }
 
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Invoices/</span> Create</h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Invoices/</span> Edit</h4>
 
 <div class="row justify-content-md-center">
     <div>
@@ -13,7 +13,16 @@
                 <h5 class="mb-0">Invoice Details</h5>
             </div>
             <div class="card-body">
-                <form asp-controller="Invoices" asp-action="Create" method="post" id="InvoiceForm">
+                <form asp-controller="Invoices" asp-action="Update" method="post" id="InvoiceForm">
+
+                    <input type="hidden" asp-for="@Model.InvoiceId" />
+                    <div class="row mb-3">
+                        <label asp-for="InvoiceNumber" class="col-sm-3 col-form-label" for="InvoiceNumber">Invoice Number</label>
+                        <div class="col-sm-6">
+                            <input asp-for="InvoiceNumber" type="text" class="form-control" name="InvoiceNumber" id="InvoiceNumber" readonly>
+                            <span asp-validation-for="InvoiceNumber" class="form-text text-danger"></span>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label asp-for="DueDate" class="col-sm-3 col-form-label" for="DueDate">Due Date</label>
                         <div class="col-sm-6">
@@ -37,7 +46,7 @@
                     </div>
                     <div class="row text-center">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="submit" class="btn btn-primary">Save Change</button>
                             <a asp-controller="Invoices" asp-action="Index" class="btn btn-secondary">Cancel</a>
                         </div>
                     </div>

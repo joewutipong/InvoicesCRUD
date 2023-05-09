@@ -1,0 +1,207 @@
+﻿@model InvoiceFilters
+@{
+    ViewBag.Title = "Index - Invoices";
+    ViewBag.CurrentPage = "Invoices";
+}
+
+<h4 class="fw-bold py-3 mb-4">Invoices</h4>
+
+<!-- Alert -->
+<div class="alert alert-danger alert-dismissible" role="alert" id="Alert" style="display: none;">
+    <span id="AlertMessage">This is a danger dismissible alert — check it out!</span>
+    <button type="button" class="btn-close" onclick="hideAlert()" aria-label="Close">
+    </button>
+</div>
+<!-- /Alert -->
+
+<div class="row justify-content-md-center">
+    <div>
+        <div class="card mb-4">
+            <div class="card-header d-flex flex-column">
+                <div>
+                    <h5 class="mb-4">Invoices</h5>
+                </div>
+                <form asp-controller="Invoices" asp-action="FilterResults" method="post" id="SearchInvoiceForm">
+                    <div class="row mb-3">
+                        <div class="col-md">
+                            <div>
+                                <label class="form-label mb-1" for="basic-default-fullname">Invoice Number</label>
+                                <input asp-for="InvoiceNumber" type="text" class="form-control" id="SearchInvoiceNumber" placeholder="Invoice Number">
+                                <span asp-validation-for="InvoiceNumber" class="form-text text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div>
+                                <label class="form-label mb-1" for="basic-default-fullname">Customer Name</label>
+                                <input asp-for="CustomerName" type="text" class="form-control" id="SearchCustomerName" placeholder="John Doe">
+                                <span asp-validation-for="CustomerName" class="form-text text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div>
+                                <label class="form-label mb-1" for="basic-default-fullname">From Due Date</label>
+                                <input asp-for="FromDueDate" type="date" class="form-control" id="SearchFromDueDate">
+                                <span asp-validation-for="FromDueDate" class="form-text text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div>
+                                <label class="form-label mb-1" for="basic-default-fullname">To Due Date</label>
+                                <input asp-for="ToDueDate" type="date" class="form-control" id="SearchToDueDate">
+                                <span asp-validation-for="ToDueDate" class="form-text text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
+                        <div class="">
+                            <button type="submit" class="btn rounded-pill btn-outline-primary float-end"><span class="tf-icons bx bx-search"></span>Filter</button>
+                        </div>
+                        <div class="ms-3">
+                            <a asp-controller="Invoices" asp-action="Index" class="btn rounded-pill btn-outline-secondary"><span class="tf-icons bx bx-trash"></span>Clear</a>
+                        </div>
+                    </div>
+                </form>
+                <div class="d-flex">
+                    <div>
+                        <a asp-controller="Invoices" asp-action="Create" type="button" class="btn btn-primary">Create Invoice</a>
+                    </div>
+                    <div class="ms-3">
+                        <button type="button" class="btn btn-info" onclick="exportExcel()">Export Excel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-md-center">
+                    <div class="table-responsive text-nowrap">
+                        <form asp-controller="Invoices" asp-action="ExportExcel" method="post" id="ExportExcelForm">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-1 text-center">
+                                            <input class="form-check-input" type="checkbox" value="" onclick="checkAll(this)">
+                                        </th>
+                                        <th class="col-2">Invoice Number</th>
+                                        <th class="col-2">Due Date</th>
+                                        <th class="col-4">Customer Name</th>
+                                        <th class="col-2 text-center">Total Price</th>
+                                        <th class="col-1 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    @if (@ViewBag.Invoices?.Count > 0)
+                                    {
+                                        @foreach (InvoiceResponse invoice in @ViewBag.Invoices)
+                                        {
+                                            <tr>
+                                                <td align="center">
+                                                    <input class="form-check-input" type="checkbox" name="SelectedInvoice" value="@invoice.InvoiceId">
+                                                </td>
+                                                <td>
+                                                    <a asp-controller="Invoices" asp-action="Detail" asp-route-id="@invoice.InvoiceId">@invoice.InvoiceNumber</a>
+                                                </td>
+                                                <td>
+                                                    @invoice.DueDate?.ToString("MM/dd/yyyy")
+                                                </td>
+                                                <td>
+                                                    @invoice.CustomerName
+                                                </td>
+                                                <td align="right">
+                                                    @invoice.TotalPrice.ToString("C")
+                                                </td>
+
+                                                <td class="text-center">
+                                                    <a asp-controller="Invoices" asp-action="Edit" asp-route-id="@invoice.InvoiceId" class="btn btn-icon btn-outline-primary">
+                                                        <span class="tf-icons bx bx-edit"></span>
+                                                    </a>
+                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#ConfirmDeleteModal" class="btn btn-icon btn-outline-danger btn-delete-product ms-2" onclick="confirmDeleteInvoice('@invoice.InvoiceId', '@invoice.InvoiceNumber')">
+                                                        <span class="tf-icons bx bx-trash"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <tr class="table-secondary text-center">
+                                            <td colspan="6">No data available in table.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal-->
+
+<div class="modal fade" id="ConfirmDeleteModal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Invoice Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="card-text">Are you sure you want to delete this invoice? This action cannot be undone.</p>
+
+                <p class="card-text">
+                    Invoice Number: <span id="DeleteInvoiceNumber"></span>
+                </p>
+
+                <p class="card-text"><small class="text-muted">By deleting this item, you will permanently remove it from your records. This action cannot be undone. Please confirm that you want to proceed with the deletion.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                <form asp-controller="Invoices" asp-action="Delete" method="post" id="DeleteInvoiceForm">
+                    <input type="hidden" name="InvoiceId" id="InvoiceIdToDelete" />
+                    <button type="submit" class="btn btn-danger" onclick="submitDeleteInvoiceForm()">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Modal -->
+
+@section scripts {
+    <script>function confirmDeleteInvoice(invoiceId, invoiceNumber) {
+            $('#DeleteInvoiceNumber').text(invoiceNumber);
+            $('#InvoiceIdToDelete').val(invoiceId)
+        }
+
+        function checkAll(checkbox) {
+            $('input:checkbox').prop('checked', checkbox.checked);
+        }
+
+        function displayAlert(message) {
+            $('#AlertMessage').text(message);
+            $('#Alert').fadeIn('slow');
+
+            setTimeout(() => {
+                $('#Alert').fadeOut('slow');
+            }, 5000);
+        }
+
+        function hideAlert() {
+            $('#Alert').fadeOut('slow');
+        }
+
+        function exportExcel() {
+            var itemsCount = $('input[type="checkbox"][name="SelectedInvoice"]:checked').length;
+
+            if (itemsCount == 0) {
+                displayAlert('Please select invoices for export.');
+                return;
+            }
+
+            $('#ExportExcelForm').submit();
+        }</script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial");
+}

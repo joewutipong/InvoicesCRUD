@@ -1,0 +1,131 @@
+﻿@model InvoiceAddRequest
+@{
+    ViewBag.Title = "Create Invoice";
+    ViewBag.CurrentPage = "Create";
+}
+
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Invoices/</span> Create</h4>
+
+<div class="row justify-content-md-center">
+    <div class="col-10">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Invoice Details</h5>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Invoices" asp-action="Create" method="post" id="CreateInvoiceForm">
+                    <div class="row mb-3">
+                        <label asp-for="InvoiceNumber" class="col-sm-3 col-form-label" for="InvoiceNumber">Invoice Number</label>
+                        <div class="col-sm-6">
+                            <input asp-for="InvoiceNumber" type="text" class="form-control" name="InvoiceNumber" id="InvoiceNumber" placeholder="IV000001">
+                            <span asp-validation-for="InvoiceNumber" class="form-text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label asp-for="DueDate" class="col-sm-3 col-form-label" for="DueDate">Due Date</label>
+                        <div class="col-sm-6">
+                            <input asp-for="DueDate" type="date" class="form-control" name="DueDate" id="DueDate">
+                            <span asp-validation-for="DueDate" class="form-text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label asp-for="CustomerName" class="col-sm-3 col-form-label" for="CustomerName">Customer Name</label>
+                        <div class="col-sm-6">
+                            <input asp-for="CustomerName" type="text" class="form-control" name="CustomerName" id="CustomerName" placeholder="John Doe">
+                            <span asp-validation-for="CustomerName" class="form-text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label asp-for="CustomerAddress" class="col-sm-3 col-form-label" for="CustomerAddress">Customer Address</label>
+                        <div class="col-sm-6">
+                            <textarea asp-for="CustomerAddress" class="form-control" name="CustomerAddress" id="CustomerAddress" placeholder="Address"></textarea>
+                            <span asp-validation-for="CustomerAddress" class="form-text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="CustomerAddress">Products</label>
+                        <div class="col-sm-9">
+                            <button type="button" class="btn btn-primary float-end" onclick="addProduct()">Add Product</button>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-bordered" id="ProductTable">
+                                <thead>
+                                    <tr>
+                                        <th class="col-4">Product Name</th>
+                                        <th class="col-2">Product Price</th>
+                                        <th class="col-2">Quantity</th>
+                                        <th class="col-3">Total Price</th>
+                                        <th class="col-1 text-center">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    @for (int i = 0; i < Model.InvoiceProducts.Count; i++)
+                                    {
+
+                                        <tr>
+                                            <td>
+                                                <input class="form-control"
+                                                       asp-for="@Model.InvoiceProducts[@i].ProductName" type="text">
+                                                <span asp-validation-for="@Model.InvoiceProducts[@i].ProductName"
+                                                      class="form-text text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <input class="form-control input-product-cal-price"
+                                                       asp-for="@Model.InvoiceProducts[@i].ProductPrice" type="number">
+                                                <span asp-validation-for="@Model.InvoiceProducts[@i].ProductPrice"
+                                                      class="form-text text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <input class="form-control input-product-cal-qty"
+                                                       asp-for="@Model.InvoiceProducts[@i].Quantity type=" number"">
+                                                <span asp-validation-for="@Model.InvoiceProducts[@i].Quantity"
+                                                      class="form-text text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <input class="form-control input-product-total-price"
+                                                       asp-for="@Model.InvoiceProducts[@i].TotalPrice" type="number" readonly>
+                                                <span asp-validation-for="@Model.InvoiceProducts[@i].TotalPrice"
+                                                      class="form-text text-danger"></span>
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-icon btn-outline-danger btn-delete-product" onclick="removeProduct(this)">
+                                                    <span class="tf-icons bx bx-trash"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label asp-for="TotalPrice" class="col-sm-3 col-form-label" for="TotalPrice">Total Price</label>
+                        <div class="col-sm-6">
+                            <h3 class="col-sm-3" id="TotalPriceDisplay" for="TotalPrice"></h3>
+                            <input asp-for="TotalPrice" type="hidden" class="form-control" name="TotalPrice" id="TotalPrice" readonly>
+                            <span asp-validation-for="TotalPrice" class="form-text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+     {
+
+    <script src="~/js/pages/invoices/create.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" asp-fallback-test="window.jQuery" asp-fallback-src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.4/jquery.validate.min.js" asp-fallback-test="window.jQuery.validator" asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" asp-fallback-test="window.jQuery.validator.unobstrusive" asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
